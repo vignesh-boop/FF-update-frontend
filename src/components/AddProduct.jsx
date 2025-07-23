@@ -10,8 +10,9 @@ const AddProduct = () => {
     category: "",
     stockQuantity: "",
     releaseDate: "",
-    productAvailable:false,
+    productAvailable: false,
   });
+
   const [image, setImage] = useState(null);
 
   const handleInputChange = (e) => {
@@ -21,178 +22,61 @@ const AddProduct = () => {
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
-    // setProduct({...product, image: e.target.files[0]})
   };
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
+
+    const formattedProduct = {
+      ...product,
+      price: parseFloat(product.price),
+      stockQuantity: parseInt(product.stockQuantity),
+    };
+
     const formData = new FormData();
     formData.append("imageFile", image);
     formData.append(
       "product",
-      new Blob([JSON.stringify(product)], { type: "application/json" })
+      new Blob([JSON.stringify(formattedProduct)], {
+        type: "application/json",
+      })
     );
 
-    axios
-      .post("https://ff-update-backend-6.onrender.com/api/product", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        console.log("Product added successfully:", response.data);
-        alert("Product added successfully");
-      })
-      .catch((error) => {
-        console.error("Error adding product:", error);
-        alert("Error adding product");
-      });
+    try {
+      const res = await axios.post(
+        "https://ff-update-backend-6.onrender.com/api/product",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("✅ Product added:", res.data);
+      alert("Product added successfully");
+    } catch (err) {
+      console.error("❌ Failed to add product:", err);
+      alert(`Error: ${err.response?.data || err.message}`);
+    }
   };
 
   return (
-    <div className="container">
-    <div className="center-container">
-      <form className="row g-3 pt-5" onSubmit={submitHandler}>
-        <div className="col-md-6">
-          <label className="form-label">
-            <h6>Product Name</h6>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Product Name"
-            onChange={handleInputChange}
-            value={product.name}
-            name="name"
-          />
-        </div>
-        <div className="col-md-6">
-          <label className="form-label">
-            <h6>Type</h6>
-          </label>
-          <input
-            type="text"
-            name="brand"
-            className="form-control"
-            placeholder="Type of Flower (or) Fertilizer"
-            value={product.brand}
-            onChange={handleInputChange}
-            id="brand"
-          />
-        </div>
-        <div className="col-12">
-          <label className="form-label">
-            <h6>Description</h6>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Condition of the Product"
-            value={product.description}
-            name="description"
-            onChange={handleInputChange}
-            id="description"
-          />
-        </div>
-        <div className="col-5">
-          <label className="form-label">
-            <h6>Price</h6>
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="Eg: $1000"
-            onChange={handleInputChange}
-            value={product.price}
-            name="price"
-            id="price"
-          />
-        </div>
-     
-           <div className="col-md-6">
-          <label className="form-label">
-            <h6>Category</h6>
-          </label>
-          <select
-            className="form-select"
-            value={product.category}
-            onChange={handleInputChange}
-            name="category"
-            id="category"
-          >
-            <option value="">Select category</option>
-            <option value="Flower">Flower</option>
-            <option value="Fertilizer">Fertilizer</option>
-          </select>
-        </div>
-
-        <div className="col-md-4">
-          <label className="form-label">
-            <h6>Stock Quantity</h6>
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="Stock Remaining"
-            onChange={handleInputChange}
-            value={product.stockQuantity}
-            name="stockQuantity"
-            // value={`${stockAlert}/${stockQuantity}`}
-            id="stockQuantity"
-          />
-        </div>
-        <div className="col-md-4">
-          <label className="form-label">
-            <h6>Release Date</h6>
-          </label>
-          <input
-            type="date"
-            className="form-control"
-            value={product.releaseDate}
-            name="releaseDate"
-            onChange={handleInputChange}
-            id="releaseDate"
-          />
-        </div>
-        {/* <input className='image-control' type="file" name='file' onChange={(e) => setProduct({...product, image: e.target.files[0]})} />
-    <button className="btn btn-primary" >Add Photo</button>  */}
-        <div className="col-md-4">
-          <label className="form-label">
-            <h6>Current Image</h6>
-          </label>
-          <input
-            className="form-control"
-            type="file"
-            onChange={handleImageChange}
-          />
-        </div>
-        <div className="col-12">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              name="productAvailable"
-              id="gridCheck"
-              checked={product.productAvailable}
-              onChange={(e) =>
-                setProduct({ ...product, productAvailable: e.target.checked })
-              }
-            />
-            <label className="form-check-label">Product Available</label>
-          </div>
-        </div>
-        <div className="col-12">
-          <button
-            type="submit"
-            className="btn btn-primary"
-            //  onClick={submitHandler}
-          >
-            Submit
-          </button>
-        </div>
-      </form>
-    </div>
-    </div>
+    <form onSubmit={submitHandler}>
+      <input type="text" name="name" placeholder="Name" value={product.name} onChange={handleInputChange} />
+      <input type="text" name="brand" placeholder="Brand" value={product.brand} onChange={handleInputChange} />
+      <input type="text" name="description" placeholder="Description" value={product.description} onChange={handleInputChange} />
+      <input type="number" name="price" placeholder="Price" value={product.price} onChange={handleInputChange} />
+      <select name="category" value={product.category} onChange={handleInputChange}>
+        <option value="">Select Category</option>
+        <option value="Flower">Flower</option>
+        <option value="Fertilizer">Fertilizer</option>
+      </select>
+      <input type="number" name="stockQuantity" placeholder="Stock" value={product.stockQuantity} onChange={handleInputChange} />
+      <input type="date" name="releaseDate" value={product.releaseDate} onChange={handleInputChange} />
+      <input type="checkbox" name="productAvailable" checked={product.productAvailable} onChange={(e) => setProduct({ ...product, productAvailable: e.target.checked })} /> Product Available
+      <input type="file" onChange={handleImageChange} />
+      <button type="submit">Submit</button>
+    </form>
   );
 };
 
