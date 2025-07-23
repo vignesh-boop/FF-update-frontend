@@ -23,7 +23,7 @@ const Home = ({ selectedCategory }) => {
           data.map(async (product) => {
             try {
               const response = await axios.get(
-                `http://192.168.185.35:8080/api/product/${product.id}/image`,
+                `https://ff-update-backend-6.onrender.com/api/product/${product.id}/image`,
                 { responseType: "blob" }
               );
               const imageUrl = URL.createObjectURL(response.data);
@@ -69,6 +69,7 @@ const Home = ({ selectedCategory }) => {
         }}
       >
         {filteredProducts.length === 0 ? (
+          <>
           <h2
             className="text-center"
             style={{
@@ -77,8 +78,11 @@ const Home = ({ selectedCategory }) => {
               alignItems: "center",
             }}
           >
-            No Products Available
+            No Products Available , Not able to Pay for Data Base Subscreption 
           </h2>
+
+          <h4>Change To Dark Mode for Better Experience</h4>
+          </>
         ) : (
           filteredProducts.map((product) => {
             const { id, brand, name, price, productAvailable, imageUrl } =
