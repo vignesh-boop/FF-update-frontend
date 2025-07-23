@@ -78,7 +78,7 @@ const Home = ({ selectedCategory }) => {
               alignItems: "center",
             }}
           >
-            No Products Available , Not able to Pay for Data Base Subscreption 
+            No Products Available , Not able to Pay for Data Base Subscription Sorry !
           </h2>
 
           <h4>Change To Dark Mode for Better Experience</h4>
