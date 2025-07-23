@@ -82,6 +82,9 @@ const Home = ({ selectedCategory }) => {
           </h2>
 
           <h4>Change To Dark Mode for Better Experience</h4>
+            <a href="https://www.linkedin.com/posts/vignesh-p-9345176836-ph_fullstackdeveloper-reactjs-springboot-activity-7317233800197861376-OjSt?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEVhqLgBKOhkoL1cV6wzcFtOTTXmKxv-P18">
+            <h4>Product Vedio</h4></a>
+
           </>
         ) : (
           filteredProducts.map((product) => {
