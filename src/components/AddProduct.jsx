@@ -61,22 +61,35 @@ const AddProduct = () => {
   };
 
   return (
-    <form onSubmit={submitHandler}>
-      <input type="text" name="name" placeholder="Name" value={product.name} onChange={handleInputChange} />
-      <input type="text" name="brand" placeholder="Brand" value={product.brand} onChange={handleInputChange} />
-      <input type="text" name="description" placeholder="Description" value={product.description} onChange={handleInputChange} />
-      <input type="number" name="price" placeholder="Price" value={product.price} onChange={handleInputChange} />
-      <select name="category" value={product.category} onChange={handleInputChange}>
-        <option value="">Select Category</option>
-        <option value="Flower">Flower</option>
-        <option value="Fertilizer">Fertilizer</option>
-      </select>
-      <input type="number" name="stockQuantity" placeholder="Stock" value={product.stockQuantity} onChange={handleInputChange} />
-      <input type="date" name="releaseDate" value={product.releaseDate} onChange={handleInputChange} />
-      <input type="checkbox" name="productAvailable" checked={product.productAvailable} onChange={(e) => setProduct({ ...product, productAvailable: e.target.checked })} /> Product Available
-      <input type="file" onChange={handleImageChange} />
-      <button type="submit">Submit</button>
-    </form>
+    <div style={{ maxWidth: "600px", margin: "auto" }}>
+      <h2 style={{ textAlign: "center" }}>Add New Product</h2>
+      <form onSubmit={submitHandler} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+        <input type="text" name="name" placeholder="Name" value={product.name} onChange={handleInputChange} required />
+        <input type="text" name="brand" placeholder="Brand" value={product.brand} onChange={handleInputChange} required />
+        <textarea name="description" placeholder="Description" value={product.description} onChange={handleInputChange} required></textarea>
+        <input type="number" name="price" placeholder="Price" value={product.price} onChange={handleInputChange} required />
+        <select name="category" value={product.category} onChange={handleInputChange} required>
+          <option value="">Select Category</option>
+          <option value="Flower">Flower</option>
+          <option value="Fertilizer">Fertilizer</option>
+        </select>
+        <input type="number" name="stockQuantity" placeholder="Stock Quantity" value={product.stockQuantity} onChange={handleInputChange} required />
+        <input type="date" name="releaseDate" value={product.releaseDate} onChange={handleInputChange} required />
+        <label>
+          <input
+            type="checkbox"
+            name="productAvailable"
+            checked={product.productAvailable}
+            onChange={(e) =>
+              setProduct({ ...product, productAvailable: e.target.checked })
+            }
+          />
+          {" "}Product Available
+        </label>
+        <input type="file" onChange={handleImageChange} accept="image/*" required />
+        <button type="submit" style={{ padding: "10px", backgroundColor: "green", color: "white", border: "none", borderRadius: "5px" }}>Submit</button>
+      </form>
+    </div>
   );
 };
 
